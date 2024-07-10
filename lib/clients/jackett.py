@@ -1,6 +1,7 @@
 import requests
 from lib.utils.kodi_utils import notification, translation
 from lib import xmltodict
+import re
 from lib.utils.settings import get_jackett_timeout
 
 class Jackett:
@@ -21,16 +22,42 @@ class Jackett:
             if res.status_code != 200:
                 notification(f"{translation(30229)} ({res.status_code})")
                 return
-            return self.parse_response(res)
+            return self.parse_response(res,season,episode)
         except Exception as e:
             self._notification(f"{translation(30229)}: {str(e)}")
 
-    def parse_response(self, res):
+    def parse_response(self, res, season, episode):
         res = xmltodict.parse(res.content)
         if "item" in res["rss"]["channel"]:
             item = res["rss"]["channel"]["item"]
             results = []
             for i in item if isinstance(item, list) else [item]:
+                title = i.get("title","").upper()
+                season_pattern = r'S\d+'
+                episode_pattern = r'E\d+'
+                complete_pattern = 'COMPLETO'
+                season_range = r'S\d+-\d+'
+                pattern = r'\d+'
+                temporada_pattern = r'(\d+)\s*(?:[ªºA]\s*)?TEMPORADA'
+                seasonr_substrings = re.findall(season_range, title)
+                season_substrings = re.findall(season_pattern, title)
+                if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and season not in season_substrings:
+                    continue
+                seasont = re.findall(pattern, seasonr_substrings[0])
+                if len(seasonr_substrings) > 0 and not (int(seasont[1])-int(season[1:]))>=0:
+                 # filtered_items.append(item)
+                    continue
+                episode_substrings = re.findall(episode_pattern, title)
+                if len(episode_substrings) > 0 and episode not in episode_substrings:
+                    continue
+                complete_substrings = re.findall(complete_pattern, title)
+                if not len(complete_substrings) > 0:
+        #  filtered_items.append(item)
+                    continue 
+                temporada_substrings = re.findall(temporada_pattern, title)
+                temporada = str(int(season[1:]))
+                if len(temporada_substrings) > 0 and temporada not in str(temporada_substrings):
+                    continue
                 extract_result(results, i)
             return results
 
