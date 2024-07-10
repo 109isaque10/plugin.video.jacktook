@@ -42,8 +42,8 @@ class Jackett:
                 temporada_pattern = r'(\d+)\s*(?:[ªºA]\s*)?TEMPORADA'
                 seasonr_substrings = re.findall(season_range, title)
                 season_substrings = re.findall(season_pattern, title)
-                seasonf = f'S{season:02}'
-                episodef = f'E{episode:02}'
+                seasonf = f'S{season:0>2}'
+                episodef = f'E{episode:0>2}'
                 xbmc.log(title,level=xbmc.LOGINFO)
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
                     xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
@@ -60,7 +60,7 @@ class Jackett:
                 complete_substrings = re.findall(complete_pattern, title)
                  
                 temporada_substrings = re.findall(temporada_pattern, title)
-                if len(temporada_substrings) > 0 and int(season) not in str(temporada_substrings):
+                if len(temporada_substrings) > 0 and season not in str(temporada_substrings):
                     xbmc.log('temporada',level=xbmc.LOGINFO)
                     continue
                     
