@@ -51,6 +51,7 @@ class Jackett:
                 tg = title.replace('.',' ')
                 tr = re.findall(t, tg)
                 if t not in tr:
+                    xbmc.log('not title: '+t+' is not'+tr, xbmc.LOGINFO)
                     continue
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
                     #xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
