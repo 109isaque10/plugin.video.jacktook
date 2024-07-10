@@ -80,9 +80,11 @@ def extract_result(results, item):
     title = item.get("title","")
     regex = '\\b(?:Dual|Nacional|Dublado)\\b'
     reg = re.findall(regex, title)
+    languages = []
+    full_languages = []
     if len(reg)>0:
-        languages = ["br"] 
-        full_languages = ["Portuguese"]
+        languages.append("br")
+        full_languages.append("Portuguese")
         title += ' - 🇧🇷'
     results.append(
         {
