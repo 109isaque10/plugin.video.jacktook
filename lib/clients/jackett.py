@@ -46,7 +46,7 @@ class Jackett:
                 episodef = f'E{episode:02}'
                 xbmc.log(title,level=xbmc.LOGINFO)
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
-                    xbmc.log('not season: 'seasonf,level=xbmc.LOGINFO)
+                    xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
                     continue
                 if len(seasonr_substrings) > 0:
                     seasont = re.findall(pattern, seasonr_substrings[0])
