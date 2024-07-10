@@ -41,7 +41,9 @@ class Jackett:
                 temporada_pattern = r'(\d+)\s*(?:[ªºA]\s*)?TEMPORADA'
                 seasonr_substrings = re.findall(season_range, title)
                 season_substrings = re.findall(season_pattern, title)
-                if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and season not in season_substrings:
+                seasonf = f'S{season:02}'
+                episodef = f'E{episode:02}'
+                if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
                     continue
                 if len(seasonr_substrings) > 0:
                     seasont = re.findall(pattern, seasonr_substrings[0])
@@ -49,14 +51,14 @@ class Jackett:
                  # filtered_items.append(item)
                         continue
                 episode_substrings = re.findall(episode_pattern, title)
-                if len(episode_substrings) > 0 and episode not in episode_substrings:
+                if len(episode_substrings) > 0 and episodef not in episode_substrings:
                     continue
                 complete_substrings = re.findall(complete_pattern, title)
                 if not len(complete_substrings) > 0:
         #  filtered_items.append(item)
                     continue 
                 temporada_substrings = re.findall(temporada_pattern, title)
-                if len(temporada_substrings) > 0 and season not in str(temporada_substrings):
+                if len(temporada_substrings) > 0 and int(season) not in str(temporada_substrings):
                     continue
                 extract_result(results, i)
             return results
