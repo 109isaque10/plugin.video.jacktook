@@ -43,7 +43,7 @@ class Jackett:
                 season_substrings = re.findall(season_pattern, title)
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and season not in season_substrings:
                     continue
-                if len(seasonr_substrings) > 0 
+                if len(seasonr_substrings) > 0:
                     seasont = re.findall(pattern, seasonr_substrings[0])
                     if not (int(seasont[1])-int(season))>=0:
                  # filtered_items.append(item)
