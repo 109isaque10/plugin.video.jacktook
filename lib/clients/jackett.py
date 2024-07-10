@@ -23,11 +23,11 @@ class Jackett:
             if res.status_code != 200:
                 notification(f"{translation(30229)} ({res.status_code})")
                 return
-            return self.parse_response(res,season,episode)
+            return self.parse_response(res,season,episode,query)
         except Exception as e:
             self._notification(f"{translation(30229)}: {str(e)}")
 
-    def parse_response(self, res, season, episode):
+    def parse_response(self, res, season, episode, query):
         res = xmltodict.parse(res.content)
         if "item" in res["rss"]["channel"]:
             item = res["rss"]["channel"]["item"]
@@ -45,6 +45,13 @@ class Jackett:
                 seasonf = f'S{season:0>2}'
                 episodef = f'E{episode:0>2}'
                 #xbmc.log(title,level=xbmc.LOGINFO)
+                tregex = r'S\d+.*'
+                reg = re.findall(tregex, query)
+                t = query.strip(str(reg))
+                tg = title.replace('.',' ')
+                tr = re.findall(t, tg)
+                if t not in tr:
+                    continue
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
                     #xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
                     continue
@@ -77,15 +84,15 @@ def extract_result(results, item):
     attributes = {
         attr["@name"]: attr["@value"] for attr in item.get("torznab:attr", [])
     } 
-    title = item.get("title","")
-    regex = '\\b(?:Dual|Nacional|Dublado)\\b'
+    title = item.get("title","").upper()
+    regex = '\\b(?:DUAL|NACIONAL|DUBLADO)\\b'
     reg = re.findall(regex, title)
     languages = []
     full_languages = []
     if len(reg)>0:
         languages.append("br")
-        full_languages.append("Portuguese")
-        title += ' - 🇧🇷'
+        full_languages.append("Portuguese 🇧🇷")
+        #title += ' - 🇧🇷'
     results.append(
         {
             "qualityTitle": "",
