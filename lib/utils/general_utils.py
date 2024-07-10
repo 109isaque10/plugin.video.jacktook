@@ -635,10 +635,7 @@ def unzip(zip_location, destination_location, destination_check):
 def post_process(res, season=None):
     if season:
         check_pack(res, season)
-    if (
-        get_setting("indexer") == Indexer.TORRENTIO
-        and get_setting("torrentio_priority_lang") != "None"
-    ):
+    if (get_setting("torrentio_priority_lang") != "None"):
         res = sort_by_priority_language(res)
     else:
         res = sort_results(res)
