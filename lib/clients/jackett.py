@@ -2,6 +2,7 @@ import requests
 from lib.utils.kodi_utils import notification, translation
 from lib import xmltodict
 import re
+import xbmc
 from lib.utils.settings import get_jackett_timeout
 
 class Jackett:
@@ -43,9 +44,9 @@ class Jackett:
                 season_substrings = re.findall(season_pattern, title)
                 seasonf = f'S{season:02}'
                 episodef = f'E{episode:02}'
-                print(title)
+                xbmc.log(title,level=xbmc.LOGINFO)
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
-                    print('not season: 'seasonf)
+                    xbmc.log('not season: 'seasonf,level=xbmc.LOGINFO)
                     continue
                 if len(seasonr_substrings) > 0:
                     seasont = re.findall(pattern, seasonr_substrings[0])
@@ -54,7 +55,7 @@ class Jackett:
                         continue
                 episode_substrings = re.findall(episode_pattern, title)
                 if len(episode_substrings) > 0 and episodef not in episode_substrings:
-                    print('not episode: '+episodef)
+                    xbmc.log('not episode: '+episodef,level=xbmc.LOGINFO)
                     continue
                 complete_substrings = re.findall(complete_pattern, title)
                 if not len(complete_substrings) > 0:
@@ -63,7 +64,7 @@ class Jackett:
                 temporada_substrings = re.findall(temporada_pattern, title)
                 if len(temporada_substrings) > 0 and int(season) not in str(temporada_substrings):
                     continue
-                print('approved')
+                xbmc.log('approved',level=xbmc.LOGINFO)
                 extract_result(results, i)
             return results
 
