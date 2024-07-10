@@ -44,7 +44,7 @@ class Jackett:
                 season_substrings = re.findall(season_pattern, title)
                 seasonf = f'S{season:0>2}'
                 episodef = f'E{episode:0>2}'
-                #xbmc.log(title,level=xbmc.LOGINFO)
+                xbmc.log(title,level=xbmc.LOGINFO)
                 tregex = r'S\d+.*'
                 reg = re.findall(tregex, query)
                 t = query.strip(str(reg))
