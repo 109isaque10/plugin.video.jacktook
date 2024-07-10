@@ -44,7 +44,7 @@ class Jackett:
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and season not in season_substrings:
                     continue
                 seasont = re.findall(pattern, seasonr_substrings[0])
-                if len(seasonr_substrings) > 0 and not (int(seasont[1])-int(season[1:]))>=0:
+                if len(seasonr_substrings) > 0 and not (int(seasont[1])-int(season))>=0:
                  # filtered_items.append(item)
                     continue
                 episode_substrings = re.findall(episode_pattern, title)
@@ -55,8 +55,7 @@ class Jackett:
         #  filtered_items.append(item)
                     continue 
                 temporada_substrings = re.findall(temporada_pattern, title)
-                temporada = str(int(season[1:]))
-                if len(temporada_substrings) > 0 and temporada not in str(temporada_substrings):
+                if len(temporada_substrings) > 0 and season not in str(temporada_substrings):
                     continue
                 extract_result(results, i)
             return results
