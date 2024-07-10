@@ -44,9 +44,9 @@ class Jackett:
                 season_substrings = re.findall(season_pattern, title)
                 seasonf = f'S{season:0>2}'
                 episodef = f'E{episode:0>2}'
-                xbmc.log(title,level=xbmc.LOGINFO)
+                #xbmc.log(title,level=xbmc.LOGINFO)
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
-                    xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
+                    #xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
                     continue
                 if len(seasonr_substrings) > 0:
                     seasont = re.findall(pattern, seasonr_substrings[0])
@@ -55,20 +55,20 @@ class Jackett:
                         continue
                 episode_substrings = re.findall(episode_pattern, title)
                 if len(episode_substrings) > 0 and episodef not in episode_substrings:
-                    xbmc.log('not episode: '+episodef,level=xbmc.LOGINFO)
+                    #xbmc.log('not episode: '+episodef,level=xbmc.LOGINFO)
                     continue
                 complete_substrings = re.findall(complete_pattern, title)
                  
                 temporada_substrings = re.findall(temporada_pattern, title)
                 if len(temporada_substrings) > 0 and season not in str(temporada_substrings):
-                    xbmc.log('temporada',level=xbmc.LOGINFO)
+                   # xbmc.log('temporada',level=xbmc.LOGINFO)
                     continue
                     
                 if len(complete_substrings) > 0 and len(season_substrings) < 0 and len(seasonr_substrings) < 0:
         #  filtered_items.append(item)
-                    xbmc.log('complete', level=xbmc.LOGINFO)
+                   # xbmc.log('complete', level=xbmc.LOGINFO)
                     extract_result(results, i)
-                xbmc.log('approved',level=xbmc.LOGINFO)
+              #  xbmc.log('approved',level=xbmc.LOGINFO)
                 extract_result(results, i)
             return results
 
@@ -76,11 +76,18 @@ class Jackett:
 def extract_result(results, item):
     attributes = {
         attr["@name"]: attr["@value"] for attr in item.get("torznab:attr", [])
-    }
+    } 
+    title = item.get("title","")
+    regex = '\\b(?:Dual|Nacional|Dublado)\\b'
+    reg = re.findall(regex, title)
+    if len(reg)>0:
+        languages = ["br"] 
+        full_languages = ["Portuguese"]
+        title += ' - 🇧🇷'
     results.append(
         {
             "qualityTitle": "",
-            "title": item.get("title", ""),
+            "title": title,
             "indexer": item.get("jackettindexer", {}).get("#text", ""),
             "publishDate": item.get("pubDate", ""),
             "guid": item.get("guid", ""),
@@ -88,6 +95,8 @@ def extract_result(results, item):
             "size": item.get("size", ""),
             "magnetUrl": attributes.get("magneturl", ""),
             "seeders": attributes.get("seeders", ""),
+            "languages": languages,
+            "fullLanguages": full_languages,
             "peers": attributes.get("peers", ""),
             "infoHash": attributes.get("infohash", ""),
         }
