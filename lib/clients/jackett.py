@@ -59,9 +59,12 @@ class Jackett:
                     #xbmc.log('not episode: '+episodef,level=xbmc.LOGINFO)
                     continue
                 complete_substrings = re.findall(complete_pattern, title)
-                 
-                temporada_substrings = re.findall(temporada_pattern, title)
-                if len(temporada_substrings) > 0 and season not in str(temporada_substrings):
+
+                t = r'\d+°?A?ª? TEMPORADA'
+                d = r'\d+'
+                tr = re.findall(t, title)
+                if tr: tf = re.findall(d, tr[0])
+                if len(tr) > 0 and str(season) not in str(tf):
                    # xbmc.log('temporada',level=xbmc.LOGINFO)
                     continue
                     
