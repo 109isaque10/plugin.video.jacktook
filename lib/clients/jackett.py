@@ -45,14 +45,7 @@ class Jackett:
                 seasonf = f'S{season:0>2}'
                 episodef = f'E{episode:0>2}'
                # xbmc.log(title,level=xbmc.LOGINFO)
-                tregex = r'S\d+.*'
-                reg = re.findall(tregex, query)
-                t = query.strip(str(reg))
-                tg = title.replace('.',' ')
-                tr = re.findall(t, tg)
-                if t not in tr:
-                   # xbmc.log('not title: '+t+' is not'+str(tr), xbmc.LOGINFO)
-                    continue
+                
                 if len(season_substrings) > 0 and len(seasonr_substrings) < 0 and seasonf not in season_substrings:
                     #xbmc.log('not season: '+seasonf,level=xbmc.LOGINFO)
                     continue
